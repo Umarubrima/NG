@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>NG App</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NG App</title>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>NG App</h1>
+        <div class="header-icons">
+            <!-- Camera Icon -->
+            <svg class="header-icon" onclick="openCamera()" viewBox="0 0 24 24">
+                <path d="M12 15.5c1.9 0 3.5-1.6 3.5-3.5S13.9 8.5 12 8.5s-3.5 1.6-3.5 3.5 1.6 3.5 3.5 3.5zM17.5 7h-3l-1-2h-4l-1 2h-3C4.7 7 4 7.7 4 8.5v9c0 .8.7 1.5 1.5 1.5h13c.8 0 1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5z"/>
+            </svg>
+            
+            <!-- Search Icon -->
+            <svg class="header-icon" onclick="focusSearch()" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            
+            <!-- Three dots menu -->
+            <div class="dropdown">
+                <svg class="header-icon" onclick="toggleDropdown()" viewBox="0 0 24 24">
+                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <div class="dropdown-item" onclick="newGroup()">New group</div>
+                    <div class="dropdown-item" onclick="newBroadcast()">New broadcast</div>
+                    <div class="dropdown-item" onclick="linkDevice()">Linked devices</div>
+                    <div class="dropdown-item" onclick="markAllRead()">Mark all read</div>
+                    <div class="dropdown-item" onclick="openSettings()">Settings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search or start new chat">
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('chats')">Chats</button>
+        <button class="nav-tab unread" onclick="switchTab('unread')">Unread</button>
+        <button class="nav-tab" onclick="switchTab('favorites')">Favorites</button>
+        <button class="nav-tab" onclick="switchTab('groups')">Groups</button>
+        <button class="nav-tab" onclick="switchTab('status')">Status</button>
+        <button class="nav-tab" onclick="switchTab('calls')">Calls</button>
+    </div>
+
+    <!-- Chat List -->
+    <div class="chat-list" id="chatList">
+        <!-- Chat items will be populated by JavaScript -->
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="newChat()">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1h.5c.2 0 .4-.1.5-.2L14.1 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 11h-2v-2h2v2zm0-4h-2V5h2v4z"/>
+        </svg>
+    </button>
+
+    <!-- Camera Overlay -->
+    <div class="camera-overlay" id="cameraOverlay">
+        <div class="camera-content">
+            <h2>Camera</h2>
+            <p>Camera functionality would be implemented here</p>
+            <div class="camera-buttons">
+                <button class="camera-btn">Take Photo</button>
+                <button class="camera-btn">Record Video</button>
+                <button class="camera-btn close-btn" onclick="closeCamera()">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
