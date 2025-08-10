@@ -369,99 +369,164 @@ body {
     background: #667781;
 }
 
-/* PWA Install Banner */
-.install-banner {
-    background-color: #00a884;
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #128c7e;
-    position: relative;
-    z-index: 100;
+/* Enhanced PWA Install Prompt */
+.install-prompt {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #00a884, #128c7e);
+    color: white;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    animation: slideDown 0.3s ease;
 }
 
-.install-content {
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.install-prompt-content {
     display: flex;
     align-items: center;
     gap: 16px;
-    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
-.install-content span {
-    color: white;
-    font-size: 14px;
+.install-prompt-icon {
+    font-size: 32px;
+    flex-shrink: 0;
+}
+
+.install-prompt-text {
     flex: 1;
 }
 
-.install-btn {
-    background-color: white;
+.install-prompt-text h3 {
+    margin: 0 0 4px 0;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.install-prompt-text p {
+    margin: 0;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+.install-prompt-buttons {
+    display: flex;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.install-button {
+    background: white;
     color: #00a884;
     border: none;
-    padding: 6px 16px;
-    border-radius: 16px;
-    font-size: 12px;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s;
 }
 
-.install-btn:hover {
-    background-color: #f0f0f0;
+.install-button:hover {
+    background: #f0f0f0;
+    transform: translateY(-1px);
 }
 
-.dismiss-btn {
-    background: none;
-    border: none;
+.dismiss-button {
+    background: transparent;
     color: white;
-    font-size: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
     cursor: pointer;
-    padding: 0;
-    width: 24px;
-    height: 24px;
+    transition: all 0.2s;
+}
+
+.dismiss-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Standalone App Adjustments */
+body.standalone {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+body.standalone .header {
+    padding-top: calc(20px + env(safe-area-inset-top, 0px));
+}
+
+/* Enhanced Mobile Experience */
+@media (max-width: 768px) {
+    .install-prompt-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .install-prompt-buttons {
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
+    
+    .install-button, .dismiss-button {
+        flex: 1;
+        max-width: 120px;
+    }
+}
+
+/* App-like behavior */
+@media (display-mode: standalone) {
+    body {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    
+    /* Hide scrollbars in standalone mode for cleaner look */
+    .chat-list::-webkit-scrollbar {
+        display: none;
+    }
+    
+    .chat-list {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+}
+
+/* Prevent text selection for app-like feel */
+.header, .nav-tabs, .fab {
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+}
+
+/* Enhanced touch targets */
+.header-icon, .nav-tab, .fab {
+    min-height: 44px;
+    min-width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.dismiss-btn:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+/* Loading animation for better UX */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
 }
 
-/* Mobile optimizations */
-@media (max-width: 768px) {
-    .header h1 {
-        font-size: 18px;
-    }
-    
-    .header-icons {
-        gap: 15px;
-    }
-    
-    .nav-tab {
-        font-size: 12px;
-        padding: 10px 8px;
-    }
-    
-    .fab {
-        bottom: 15px;
-        right: 15px;
-        width: 48px;
-        height: 48px;
-    }
-}
-
-/* Standalone PWA mode adjustments */
-@media (display-mode: standalone) {
-    .header {
-        padding-top: 20px; /* Account for status bar on mobile */
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-color: #111b21;
-        color: #e9edef;
-    }
+.loading {
+    animation: pulse 1.5s ease-in-out infinite;
 }
