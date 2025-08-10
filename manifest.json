@@ -1,0 +1,35 @@
+{
+  "name": "NG App - Messaging",
+  "short_name": "NG App",
+  "description": "Modern messaging app with WhatsApp-like interface",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#111b21",
+  "theme_color": "#00a884",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["social", "communication"],
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192x192/00a884/ffffff?text=NG",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://via.placeholder.com/512x512/00a884/ffffff?text=NG",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "https://via.placeholder.com/320x640/111b21/ffffff?text=NG+App+Mobile",
+      "sizes": "320x640",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
