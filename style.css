@@ -368,3 +368,100 @@ body {
 .chat-list::-webkit-scrollbar-thumb:hover {
     background: #667781;
 }
+
+/* PWA Install Banner */
+.install-banner {
+    background-color: #00a884;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #128c7e;
+    position: relative;
+    z-index: 100;
+}
+
+.install-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.install-content span {
+    color: white;
+    font-size: 14px;
+    flex: 1;
+}
+
+.install-btn {
+    background-color: white;
+    color: #00a884;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.install-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.dismiss-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dismiss-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .header h1 {
+        font-size: 18px;
+    }
+    
+    .header-icons {
+        gap: 15px;
+    }
+    
+    .nav-tab {
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+    
+    .fab {
+        bottom: 15px;
+        right: 15px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* Standalone PWA mode adjustments */
+@media (display-mode: standalone) {
+    .header {
+        padding-top: 20px; /* Account for status bar on mobile */
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: #111b21;
+        color: #e9edef;
+    }
+}
