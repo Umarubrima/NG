@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NG App</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #111b21;
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background-color: #202c33;
+            padding: 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        .header h1 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #e9edef;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .header-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            fill: #aebac1;
+        }
+
+        .header-icon:hover {
+            fill: #e9edef;
+        }
+
+        /* Search Bar */
+        .search-container {
+            padding: 8px 16px;
+            background-color: #202c33;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        .search-bar {
+            background-color: #2a3942;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 12px;
+            width: 100%;
+            color: #e9edef;
+            font-size: 15px;
+        }
+
+        .search-bar::placeholder {
+            color: #8696a0;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            background-color: #111b21;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            background-color: #202c33;
+            display: flex;
+            border-bottom: 1px solid #2a3942;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px;
+            text-align: center;
+            background: none;
+            border: none;
+            color: #8696a0;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-tab.active {
+            color: #00a884;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #00a884;
+        }
+
+        .nav-tab.unread::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            right: 20px;
+            width: 6px;
+            height: 6px;
+            background-color: #00a884;
+            border-radius: 50%;
+        }
+
+        /* Chat List */
+        .chat-list {
+            height: calc(100vh - 140px);
+            overflow-y: auto;
+            background-color: #111b21;
+        }
+
+        .chat-item {
+            padding: 12px 16px;
+            border-bottom: 1px solid #2a3942;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-item:hover {
+            background-color: #202c33;
+        }
+
+        .chat-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00a884, #128c7e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+        }
+
+        .chat-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .chat-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: #e9edef;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-time {
+            font-size: 12px;
+            color: #8696a0;
+        }
+
+        .chat-preview {
+            font-size: 14px;
+            color: #8696a0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .unread-count {
+            background-color: #00a884;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .favorite-icon {
+            width: 16px;
+            height: 16px;
+            fill: #ffb000;
+        }
+
+        /* Floating Action Button */
+        .fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background-color: #00a884;
+            border: none;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+        }
+
+        .fab svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background-color: #2a3942;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            color: #e9edef;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background-color: #111b21;
+        }
+
+        /* Camera Overlay */
+        .camera-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .camera-overlay.show {
+            display: flex;
+        }
+
+        .camera-content {
+            text-align: center;
+            color: white;
+        }
+
+        .camera-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .camera-btn {
+            padding: 12px 24px;
+            background-color: #00a884;
+            border: none;
+            border-radius: 6px;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .camera-btn:hover {
+            background-color: #128c7e;
+        }
+
+        .close-btn {
+            background-color: #54656f;
+        }
+
+        .close-btn:hover {
+            background-color: #3b4a54;
+        }
+
+        /* Status indicator */
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background-color: #00a884;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            border: 2px solid #111b21;
+        }
+
+        .chat-avatar {
+            position: relative;
+        }
+
+        /* Group chat indicator */
+        .group-indicator {
+            background: linear-gradient(45deg, #667781, #54656f);
+        }
+
+        /* Scrollbar styling */
+        .chat-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .chat-list::-webkit-scrollbar-track {
+            background: #2a3942;
+        }
+
+        .chat-list::-webkit-scrollbar-thumb {
+            background: #54656f;
+            border-radius: 3px;
+        }
+
+        .chat-list::-webkit-scrollbar-thumb:hover {
+            background: #667781;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>NG App</h1>
+        <div class="header-icons">
+            <!-- Camera Icon -->
+            <svg class="header-icon" onclick="openCamera()" viewBox="0 0 24 24">
+                <path d="M12 15.5c1.9 0 3.5-1.6 3.5-3.5S13.9 8.5 12 8.5s-3.5 1.6-3.5 3.5 1.6 3.5 3.5 3.5zM17.5 7h-3l-1-2h-4l-1 2h-3C4.7 7 4 7.7 4 8.5v9c0 .8.7 1.5 1.5 1.5h13c.8 0 1.5-.7 1.5-1.5v-9c0-.8-.7-1.5-1.5-1.5z"/>
+            </svg>
+            
+            <!-- Search Icon -->
+            <svg class="header-icon" onclick="focusSearch()" viewBox="0 0 24 24">
+                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+            </svg>
+            
+            <!-- Three dots menu -->
+            <div class="dropdown">
+                <svg class="header-icon" onclick="toggleDropdown()" viewBox="0 0 24 24">
+                    <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+                </svg>
+                <div class="dropdown-content" id="dropdownMenu">
+                    <div class="dropdown-item" onclick="newGroup()">New group</div>
+                    <div class="dropdown-item" onclick="newBroadcast()">New broadcast</div>
+                    <div class="dropdown-item" onclick="linkDevice()">Linked devices</div>
+                    <div class="dropdown-item" onclick="markAllRead()">Mark all read</div>
+                    <div class="dropdown-item" onclick="openSettings()">Settings</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+        <input type="text" class="search-bar" id="searchInput" placeholder="Search or start new chat">
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs">
+        <button class="nav-tab active" onclick="switchTab('chats')">Chats</button>
+        <button class="nav-tab unread" onclick="switchTab('unread')">Unread</button>
+        <button class="nav-tab" onclick="switchTab('favorites')">Favorites</button>
+        <button class="nav-tab" onclick="switchTab('groups')">Groups</button>
+        <button class="nav-tab" onclick="switchTab('status')">Status</button>
+        <button class="nav-tab" onclick="switchTab('calls')">Calls</button>
+    </div>
+
+    <!-- Chat List -->
+    <div class="chat-list" id="chatList">
+        <!-- Chat items will be populated by JavaScript -->
+    </div>
+
+    <!-- Floating Action Button -->
+    <button class="fab" onclick="newChat()">
+        <svg viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h4v3c0 .6.4 1 1 1h.5c.2 0 .4-.1.5-.2L14.1 18H20c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 11h-2v-2h2v2zm0-4h-2V5h2v4z"/>
+        </svg>
+    </button>
+
+    <!-- Camera Overlay -->
+    <div class="camera-overlay" id="cameraOverlay">
+        <div class="camera-content">
+            <h2>Camera</h2>
+            <p>Camera functionality would be implemented here</p>
+            <div class="camera-buttons">
+                <button class="camera-btn">Take Photo</button>
+                <button class="camera-btn">Record Video</button>
+                <button class="camera-btn close-btn" onclick="closeCamera()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for different tabs
+        const chatData = {
+            chats: [],
+            unread: [],
+            favorites: [],
+            groups: [],
+            status: [
+                {
+                    name: "My Status",
+                    preview: "Tap to add status update",
+                    time: "Add Status",
+                    unread: 0,
+                    isFavorite: false,
+                    isGroup: false,
+                    isOnline: true
+                }
+            ],
+            calls: []
+        };
+
+        let currentTab = 'chats';
+
+        // Initialize the app
+        function init() {
+            updateChatData();
+            renderChatList();
+        }
+
+        // Update chat data for different tabs
+        function updateChatData() {
+            chatData.unread = chatData.chats.filter(chat => chat.unread > 0);
+            chatData.favorites = chatData.chats.filter(chat => chat.isFavorite);
+            chatData.groups = chatData.chats.filter(chat => chat.isGroup);
+        }
+
+        // Render chat list based on current tab
+        function renderChatList() {
+            const chatList = document.getElementById('chatList');
+            const data = chatData[currentTab] || [];
+
+            chatList.innerHTML = '';
+
+            if (data.length === 0) {
+                const emptyState = document.createElement('div');
+                emptyState.style.textAlign = 'center';
+                emptyState.style.padding = '40px 20px';
+                emptyState.style.color = '#8696a0';
+                emptyState.innerHTML = `<p>No ${currentTab} found</p>`;
+                chatList.appendChild(emptyState);
+                return;
+            }
+
+            data.forEach(chat => {
+                const chatItem = createChatItem(chat);
+                chatList.appendChild(chatItem);
+            });
+        }
+
+        // Create individual chat item
+        function createChatItem(chat) {
+            const chatItem = document.createElement('div');
+            chatItem.className = 'chat-item';
+            
+            const initials = chat.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            const avatarClass = chat.isGroup ? 'chat-avatar group-indicator' : 'chat-avatar';
+            
+            chatItem.innerHTML = `
+                <div class="${avatarClass}">
+                    ${initials}
+                    ${chat.isOnline ? '<div class="status-indicator"></div>' : ''}
+                </div>
+                <div class="chat-content">
+                    <div class="chat-header">
+                        <div class="chat-name">${chat.name}</div>
+                        <div class="chat-meta">
+                            ${chat.isFavorite ? '<svg class="favorite-icon" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>' : ''}
+                            <div class="chat-time">${chat.time}</div>
+                        </div>
+                    </div>
+                    <div class="chat-preview">${chat.preview}</div>
+                </div>
+                ${chat.unread > 0 ? `<div class="unread-count">${chat.unread}</div>` : ''}
+            `;
+
+            chatItem.addEventListener('click', () => openChat(chat));
+            return chatItem;
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            currentTab = tabName;
+            
+            // Update tab appearance
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderChatList();
+        }
+
+        // Header functions
+        function openCamera() {
+            document.getElementById('cameraOverlay').classList.add('show');
+        }
+
+        function closeCamera() {
+            document.getElementById('cameraOverlay').classList.remove('show');
+        }
+
+        function focusSearch() {
+            document.getElementById('searchInput').focus();
+        }
+
+        function toggleDropdown() {
+            const dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('show');
+        }
+
+        // Dropdown menu functions
+        function newGroup() {
+            alert('New Group functionality would be implemented here');
+            document.getElementById('dropdownMenu').classList.remove('show');
+        }
+
+        function newBroadcast() {
+            alert('New Broadcast functionality would be implemented here');
+            document.getElementById('dropdownMenu').classList.remove('show');
+        }
+
+        function linkDevice() {
+            alert('Link Device functionality would be implemented here');
+            document.getElementById('dropdownMenu').classList.remove('show');
+        }
+
+        function markAllRead() {
+            // Mark all chats as read
+            chatData.chats.forEach(chat => chat.unread = 0);
+            updateChatData();
+            renderChatList();
+            document.getElementById('dropdownMenu').classList.remove('show');
+        }
+
+        function openSettings() {
+            alert('Settings would be implemented here');
+            document.getElementById('dropdownMenu').classList.remove('show');
+        }
+
+        // Other functions
+        function newChat() {
+            alert('New Chat functionality would be implemented here');
+        }
+
+        function openChat(chat) {
+            alert(`Opening chat with ${chat.name}`);
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const chatItems = document.querySelectorAll('.chat-item');
+            
+            chatItems.forEach(item => {
+                const chatName = item.querySelector('.chat-name').textContent.toLowerCase();
+                const chatPreview = item.querySelector('.chat-preview').textContent.toLowerCase();
+                
+                if (chatName.includes(searchTerm) || chatPreview.includes(searchTerm)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                document.getElementById('dropdownMenu').classList.remove('show');
+            }
+        });
+
+        // Initialize the app when the page loads
+        init();
+    </script>
+</body>
+</html>
