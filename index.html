@@ -1,19 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>NG App</title>
-  <link rel="stylesheet" href="./style.css">
-
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NG App</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#00a884">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="NG App">
+    <meta name="description" content="Modern messaging app with WhatsApp-like interface">
+    
+    <!-- PWA Links -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/00a884/ffffff?text=NG">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://via.placeholder.com/32x32/00a884/ffffff?text=NG">
+    
+    <!-- CSS File -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Header -->
@@ -43,6 +50,15 @@
                     <div class="dropdown-item" onclick="openSettings()">Settings</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Install PWA Banner -->
+    <div id="installBanner" class="install-banner" style="display: none;">
+        <div class="install-content">
+            <span>Install NG App for better experience!</span>
+            <button id="installBtn" class="install-btn">Install</button>
+            <button id="dismissBtn" class="dismiss-btn">×</button>
         </div>
     </div>
 
@@ -85,10 +101,50 @@
             </div>
         </div>
     </div>
-</body>
-</html>
-<!-- partial -->
-  <script  src="./script.js"></script>
 
+    <!-- JavaScript File -->
+    <script src="script.js"></script>
+    
+    <!-- PWA Registration Script -->
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch((registrationError) => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // PWA Install prompt
+        let deferredPrompt;
+        const installBanner = document.getElementById('installBanner');
+        const installBtn = document.getElementById('installBtn');
+        const dismissBtn = document.getElementById('dismissBtn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBanner.style.display = 'block';
+        });
+
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response to the install prompt: ${outcome}`);
+                deferredPrompt = null;
+                installBanner.style.display = 'none';
+            }
+        });
+
+        dismissBtn.addEventListener('click', () => {
+            installBanner.style.display = 'none';
+        });
+    </script>
 </body>
 </html>
