@@ -2,27 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>NG App</title>
     
-    <!-- PWA Meta Tags -->
+    <!-- Enhanced PWA Meta Tags -->
     <meta name="theme-color" content="#00a884">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="NG App">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="NG App">
     <meta name="description" content="Modern messaging app with WhatsApp-like interface">
+    
+    <!-- Prevent zoom on iOS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
     
     <!-- PWA Links -->
     <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="https://via.placeholder.com/180x180/00a884/ffffff?text=NG">
+    <link rel="apple-touch-icon" href="https://img.icons8.com/fluency/180/chat.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="https://img.icons8.com/fluency/152/chat.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://img.icons8.com/fluency/180/chat.png">
+    <link rel="apple-touch-icon" sizes="167x167" href="https://img.icons8.com/fluency/167/chat.png">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/png" href="https://via.placeholder.com/32x32/00a884/ffffff?text=NG">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/fluency/32/chat.png">
     
     <!-- CSS File -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- PWA Install Prompt -->
+    <div id="installPrompt" class="install-prompt" style="display: none;">
+        <div class="install-prompt-content">
+            <div class="install-prompt-icon">📱</div>
+            <div class="install-prompt-text">
+                <h3>Install NG App</h3>
+                <p>Get the full app experience!</p>
+            </div>
+            <div class="install-prompt-buttons">
+                <button id="installButton" class="install-button">Install</button>
+                <button id="dismissButton" class="dismiss-button">Later</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Header -->
     <div class="header">
         <h1>NG App</h1>
@@ -50,15 +73,6 @@
                     <div class="dropdown-item" onclick="openSettings()">Settings</div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Install PWA Banner -->
-    <div id="installBanner" class="install-banner" style="display: none;">
-        <div class="install-content">
-            <span>Install NG App for better experience!</span>
-            <button id="installBtn" class="install-btn">Install</button>
-            <button id="dismissBtn" class="dismiss-btn">×</button>
         </div>
     </div>
 
@@ -105,7 +119,7 @@
     <!-- JavaScript File -->
     <script src="script.js"></script>
     
-    <!-- PWA Registration Script -->
+    <!-- Enhanced PWA Registration Script -->
     <script>
         // Register service worker
         if ('serviceWorker' in navigator) {
@@ -120,31 +134,49 @@
             });
         }
 
-        // PWA Install prompt
+        // Enhanced PWA Install prompt
         let deferredPrompt;
-        const installBanner = document.getElementById('installBanner');
-        const installBtn = document.getElementById('installBtn');
-        const dismissBtn = document.getElementById('dismissBtn');
+        const installPrompt = document.getElementById('installPrompt');
+        const installButton = document.getElementById('installButton');
+        const dismissButton = document.getElementById('dismissButton');
 
         window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
+            // Save the event so it can be triggered later
             deferredPrompt = e;
-            installBanner.style.display = 'block';
+            // Show the install prompt
+            installPrompt.style.display = 'block';
         });
 
-        installBtn.addEventListener('click', async () => {
+        installButton.addEventListener('click', async () => {
             if (deferredPrompt) {
+                // Show the install prompt
                 deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
                 const { outcome } = await deferredPrompt.userChoice;
                 console.log(`User response to the install prompt: ${outcome}`);
+                // Clear the deferredPrompt variable
                 deferredPrompt = null;
-                installBanner.style.display = 'none';
+                // Hide the install prompt
+                installPrompt.style.display = 'none';
             }
         });
 
-        dismissBtn.addEventListener('click', () => {
-            installBanner.style.display = 'none';
+        dismissButton.addEventListener('click', () => {
+            installPrompt.style.display = 'none';
         });
+
+        // Check if app is already installed
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA was installed');
+            installPrompt.style.display = 'none';
+        });
+
+        // Hide address bar on mobile when in standalone mode
+        if (window.navigator.standalone || window.matchMedia('(display-mode: standalone)').matches) {
+            document.body.classList.add('standalone');
+        }
     </script>
 </body>
 </html>
